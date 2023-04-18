@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
-
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
-#include "esp_board.h"
 #include "iot_button.h"
+
+#include "esp_board.h"
 
 #include "lvgl.h"
 #include "../ui/ui.h"
@@ -24,7 +24,7 @@ extern "C" {
 #endif
 
 
-#define APP_DISP_DEFAULT_BRIGHTNESS 90   // 0-100%
+#define APP_DISP_DEFAULT_BRIGHTNESS 100   // 0-100%
 #define TAG "HMI"
 
 // The format to be printed float value on menu (1 decimal point)

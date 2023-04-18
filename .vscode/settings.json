@@ -6,6 +6,7 @@
         "hmi_main.h": "c",
         "custom_hmi.h": "c",
         "led_strip.h": "c",
-        "typename.h": "c"
+        "typename.h": "c",
+        "esp_board.h": "c"
     }
 }

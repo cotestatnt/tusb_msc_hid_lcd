@@ -27,6 +27,15 @@
 #define BSP_LCD_RST           (GPIO_NUM_41)
 #define BSP_LCD_BACKLIGHT     (GPIO_NUM_38)
 
+/* Joyoad */
+#define BTN_UP    (GPIO_NUM_4)
+#define BTN_DOWN  (GPIO_NUM_5)
+#define BTN_LEFT  (GPIO_NUM_6)
+#define BTN_RIGHT (GPIO_NUM_7)
+#define BTN_MID   (GPIO_NUM_15)
+#define BTN_SET   (GPIO_NUM_16)
+#define BTN_RES   (GPIO_NUM_17)
+
 /* Button */
 typedef enum {
     BSP_BUTTON_BOOT = GPIO_NUM_0

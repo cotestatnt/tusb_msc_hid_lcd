@@ -4,17 +4,27 @@
  *  Created on: 12 apr 2023
  *      Author: Cotesta Tolentino
  */
-#include "led_strip.h"
 
+/*
+* GPIOs definitions inside
+*    components/esp_custom_board/include/esp_board.h
+*/
+#include "esp_board.h"
 
-// HMI created as components
-// GPIOs definitions inside joypad.h
+/*
+* HMI created as components
+*    (esp_custom_board as dependency using local path)
+*/
 #include "custom_hmi.h"
 
 // USB included as file
 #include "usb/usb_main.c"
 
+// RGB NeoPixel LED
+#include "led_strip.h"
 
+
+// Some variables tied to menu items
 int counter = 0;
 int value1 = 100;
 int value2 = 1500;
@@ -22,11 +32,11 @@ float value3 = 25.7;
 float value4 = 12.1;
 bool value5 = true;
 
+// RGB led stuffs
 static led_strip_handle_t led_strip;
 int red = 5;
 int green = 5;
 int blue = 5;
-
 
 // Function prototypes
 static void link_menu_items();

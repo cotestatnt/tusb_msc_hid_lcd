@@ -12,14 +12,6 @@ extern "C" {
 /*              JOYPAD                 */
 /***************************************/
 
-#define BTN_UP    (GPIO_NUM_4)
-#define BTN_DOWN  (GPIO_NUM_5)
-#define BTN_LEFT  (GPIO_NUM_6)
-#define BTN_RIGHT (GPIO_NUM_7)
-#define BTN_MID   (GPIO_NUM_15)
-#define BTN_SET   (GPIO_NUM_16)
-#define BTN_RES   (GPIO_NUM_17)
-
 #define BUTTON_NUM 7
 
 int get_btn_index(button_handle_t btn);
