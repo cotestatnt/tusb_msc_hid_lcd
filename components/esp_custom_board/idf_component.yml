@@ -1,0 +1,6 @@
+dependencies:
+  esp_lvgl_port: ^1
+  idf: "^5.0"
+description: Custom Board Support Package for esp32-s3-cutom-kit
+url: https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/hw-reference/esp32s3/user-guide-devkitc-1.html
+version: 0.0.1

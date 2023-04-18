@@ -1,0 +1,11 @@
+{
+    "idf.adapterTargetName": "esp32s3",
+    "idf.portWin": "COM8",
+    "idf.flashType": "UART",
+    "files.associations": {
+        "hmi_main.h": "c",
+        "custom_hmi.h": "c",
+        "led_strip.h": "c",
+        "typename.h": "c"
+    }
+}
