@@ -38,6 +38,19 @@
 #define BTN_SET   (GPIO_NUM_16)
 #define BTN_RES   (GPIO_NUM_17)
 
+/* uSD card */
+#define BSP_SD_D0             (GPIO_NUM_9)
+#define BSP_SD_D1             (GPIO_NUM_10)
+#define BSP_SD_D2             (GPIO_NUM_11)
+#define BSP_SD_D3             (GPIO_NUM_12)
+
+#define BSP_SD_CS             (BSP_SD_D3)
+#define BSP_SD_CLK            (BSP_LCD_SPI_CLK)
+#define BSP_SD_CMD            (BSP_LCD_SPI_MOSI)
+#define BSP_SD_DET            (BSP_LCD_SPI_MISO)
+#define BSP_SD_DO             (BSP_LCD_SPI_MISO)
+
+
 /* Button */
 typedef enum {
     BSP_BUTTON_BOOT = GPIO_NUM_0
@@ -50,18 +63,6 @@ typedef enum {
     BSP_OUT1 = GPIO_NUM_21
 } bsp_out_t;
 
-
-/* uSD card */
-#define BSP_SD_D0             (GPIO_NUM_9)
-#define BSP_SD_D1             (GPIO_NUM_10)
-#define BSP_SD_D2             (GPIO_NUM_11)
-#define BSP_SD_D3             (GPIO_NUM_12)
-
-#define BSP_SD_CS             (BSP_SD_D3)
-#define BSP_SD_CLK            (BSP_LCD_SPI_CLK)
-#define BSP_SD_CMD            (BSP_LCD_SPI_MOSI)
-#define BSP_SD_DET            (BSP_LCD_SPI_MISO)
-#define BSP_SD_DO             (BSP_LCD_SPI_MISO)
 
 #ifdef __cplusplus
 extern "C" {
