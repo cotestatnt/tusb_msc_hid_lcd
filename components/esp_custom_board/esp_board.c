@@ -43,7 +43,6 @@ esp_err_t bsp_out_set(const bsp_out_t out_io, const bool on)
     return ESP_OK;
 }
 
-
 esp_err_t bsp_button_init(const bsp_button_t btn)
 {
     const gpio_config_t btn_io_config = {

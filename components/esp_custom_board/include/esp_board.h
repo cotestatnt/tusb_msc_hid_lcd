@@ -19,13 +19,15 @@
 #define BSP_LEDSTRIP_IO      (GPIO_NUM_48)
 
 /* Display */
+#define BSP_LCD_SPI_MISO      (GPIO_NUM_34)
 #define BSP_LCD_SPI_MOSI      (GPIO_NUM_35)
-#define BSP_LCD_SPI_MISO      (-1)
 #define BSP_LCD_SPI_CLK       (GPIO_NUM_36)
 #define BSP_LCD_SPI_CS        (GPIO_NUM_37)
+#define BSP_LCD_BACKLIGHT     (GPIO_NUM_38)
+
 #define BSP_LCD_DC            (GPIO_NUM_40)
 #define BSP_LCD_RST           (GPIO_NUM_41)
-#define BSP_LCD_BACKLIGHT     (GPIO_NUM_38)
+
 
 /* Joyoad */
 #define BTN_UP    (GPIO_NUM_4)
@@ -54,9 +56,12 @@ typedef enum {
 #define BSP_SD_D1             (GPIO_NUM_10)
 #define BSP_SD_D2             (GPIO_NUM_11)
 #define BSP_SD_D3             (GPIO_NUM_12)
-#define BSP_SD_CLK            (GPIO_NUM_13)
-#define BSP_SD_CMD            (GPIO_NUM_14)
-#define BSP_SD_DET            (GPIO_NUM_46)
+
+#define BSP_SD_CS             (BSP_SD_D3)
+#define BSP_SD_CLK            (BSP_LCD_SPI_CLK)
+#define BSP_SD_CMD            (BSP_LCD_SPI_MOSI)
+#define BSP_SD_DET            (BSP_LCD_SPI_MISO)
+#define BSP_SD_DO             (BSP_LCD_SPI_MISO)
 
 #ifdef __cplusplus
 extern "C" {
