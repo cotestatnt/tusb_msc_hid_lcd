@@ -13,7 +13,7 @@ lv_obj_t * ui_ScreenSetup;
 lv_obj_t * ui_itemLbl1;
 lv_obj_t * ui_itemLbl2;
 lv_obj_t * ui_itemLblRGB;
-lv_obj_t * ui_itemLblhome;
+lv_obj_t * ui_CheckboxHID;
 lv_obj_t * ui_ScreenEdit1;
 lv_obj_t * ui_Panel1;
 lv_obj_t * ui_valueLbl1;
@@ -82,8 +82,8 @@ void ui_ScreenSetup_screen_init(void)
     lv_obj_set_flex_align(ui_ScreenSetup, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_set_style_pad_left(ui_ScreenSetup, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_ScreenSetup, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_ScreenSetup, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_ScreenSetup, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_ScreenSetup, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_ScreenSetup, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_ScreenSetup, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_ScreenSetup, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -115,14 +115,15 @@ void ui_ScreenSetup_screen_init(void)
     lv_obj_set_style_border_opa(ui_itemLblRGB, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
     lv_obj_set_style_border_width(ui_itemLblRGB, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
 
-    ui_itemLblhome = lv_label_create(ui_ScreenSetup);
-    lv_obj_set_width(ui_itemLblhome, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_itemLblhome, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_itemLblhome, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_itemLblhome, "Home");
-    lv_obj_set_style_border_color(ui_itemLblhome, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_opa(ui_itemLblhome, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui_itemLblhome, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
+    ui_CheckboxHID = lv_checkbox_create(ui_ScreenSetup);
+    lv_checkbox_set_text(ui_CheckboxHID, "USB KEYPAD");
+    lv_obj_set_width(ui_CheckboxHID, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_CheckboxHID, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_CheckboxHID, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_CheckboxHID, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+
+    lv_obj_set_style_border_color(ui_CheckboxHID, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_opa(ui_CheckboxHID, 255, LV_PART_INDICATOR | LV_STATE_FOCUSED);
 
 }
 void ui_ScreenEdit1_screen_init(void)
@@ -132,9 +133,9 @@ void ui_ScreenEdit1_screen_init(void)
     lv_obj_set_flex_flow(ui_ScreenEdit1, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_ScreenEdit1, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_set_style_pad_left(ui_ScreenEdit1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_ScreenEdit1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_ScreenEdit1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_ScreenEdit1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_ScreenEdit1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_ScreenEdit1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_ScreenEdit1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_ScreenEdit1, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -219,8 +220,8 @@ void ui_ScreenEdit2_screen_init(void)
     lv_obj_set_flex_align(ui_ScreenEdit2, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_set_style_pad_left(ui_ScreenEdit2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_ScreenEdit2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_ScreenEdit2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_ScreenEdit2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_ScreenEdit2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_ScreenEdit2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_ScreenEdit2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_ScreenEdit2, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -343,8 +344,8 @@ void ui_ScreenEditRGB_screen_init(void)
     lv_obj_set_flex_align(ui_ScreenEditRGB, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_set_style_pad_left(ui_ScreenEditRGB, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_ScreenEditRGB, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_ScreenEditRGB, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_ScreenEditRGB, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_ScreenEditRGB, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_ScreenEditRGB, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_ScreenEditRGB, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_ScreenEditRGB, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 

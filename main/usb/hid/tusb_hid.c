@@ -97,24 +97,3 @@ static void mouse_draw_square_next_delta(int8_t *delta_x_ret, int8_t *delta_y_re
     }
 }
 
-static void app_send_hid_demo(void)
-{
-    // Keyboard output: Send key 'a/A' pressed and released
-    ESP_LOGI(HID_TAG, "Sending Keyboard report");
-    uint8_t keycode[6] = {HID_KEY_A};
-    tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, keycode);
-    vTaskDelay(pdMS_TO_TICKS(50));
-    tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, NULL);
-
-    // Mouse output: Move mouse cursor in square trajectory
-    ESP_LOGI(HID_TAG, "Sending Mouse report");
-    int8_t delta_x;
-    int8_t delta_y;
-    for (int i = 0; i < (DISTANCE_MAX / DELTA_SCALAR) * 4; i++)
-    {
-        // Get the next x and y delta in the draw square pattern
-        mouse_draw_square_next_delta(&delta_x, &delta_y);
-        tud_hid_mouse_report(HID_ITF_PROTOCOL_MOUSE, 0x00, delta_x, delta_y, 0, 0);
-        vTaskDelay(pdMS_TO_TICKS(20));
-    }
-}

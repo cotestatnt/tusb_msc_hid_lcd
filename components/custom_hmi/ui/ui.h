@@ -19,7 +19,7 @@ extern lv_obj_t * ui_ScreenSetup;
 extern lv_obj_t * ui_itemLbl1;
 extern lv_obj_t * ui_itemLbl2;
 extern lv_obj_t * ui_itemLblRGB;
-extern lv_obj_t * ui_itemLblhome;
+extern lv_obj_t * ui_CheckboxHID;
 extern lv_obj_t * ui_ScreenEdit1;
 extern lv_obj_t * ui_Panel1;
 extern lv_obj_t * ui_valueLbl1;

@@ -2,7 +2,37 @@
 #include "msc/tusb_msc.c"
 #include "hid/tusb_hid.c"
 
+static bool arrow_keypad_active = false;
+
 static const char *USB_TAG = "USB_MAIN";
+
+
+static void send_keycode(uint8_t* keycode)
+{
+    ESP_LOGI(HID_TAG, "Sending Keyboard report");
+    tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, keycode);
+    vTaskDelay(pdMS_TO_TICKS(50));
+    tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, NULL);
+}
+
+static void app_send_hid_demo(void)
+{
+    // Keyboard output: Send key 'a/A' pressed and released
+    uint8_t keycode[6] = {HID_KEY_A};
+    send_keycode(keycode);
+
+    // Mouse output: Move mouse cursor in square trajectory
+    ESP_LOGI(HID_TAG, "Sending Mouse report");
+    int8_t delta_x;
+    int8_t delta_y;
+    for (int i = 0; i < (DISTANCE_MAX / DELTA_SCALAR) * 4; i++)
+    {
+        // Get the next x and y delta in the draw square pattern
+        mouse_draw_square_next_delta(&delta_x, &delta_y);
+        tud_hid_mouse_report(HID_ITF_PROTOCOL_MOUSE, 0x00, delta_x, delta_y, 0, 0);
+        vTaskDelay(pdMS_TO_TICKS(20));
+    }
+}
 
 // A very simple task which increment a variable once a second
 static void usb_hid_task(void *arg)
@@ -11,12 +41,33 @@ static void usb_hid_task(void *arg)
     {
         if (tud_mounted())
         {
-            static bool send_hid_data = true;
-            if (send_hid_data)
-            {
-                app_send_hid_demo();
+            if (arrow_keypad_active) {
+                if (!gpio_get_level(BTN_UP)) {
+                    uint8_t keycode[6] = {HID_KEY_ARROW_UP};
+                    send_keycode(keycode);
+                }
+                if (!gpio_get_level(BTN_DOWN)) {
+                    uint8_t keycode[6] = {HID_KEY_ARROW_DOWN};
+                    send_keycode(keycode);
+                }
+                if (!gpio_get_level(BTN_LEFT)) {
+                    uint8_t keycode[6] = {HID_KEY_ARROW_LEFT};
+                    send_keycode(keycode);
+                }
+                if (!gpio_get_level(BTN_RIGHT)) {
+                    uint8_t keycode[6] = {HID_KEY_ARROW_RIGHT};
+                    send_keycode(keycode);
+                }
             }
-            send_hid_data = !gpio_get_level(APP_BUTTON);
+            else {
+                static bool send_hid_data = false;
+                if (send_hid_data)
+                {
+                    app_send_hid_demo();
+                }
+                send_hid_data = !gpio_get_level(APP_BUTTON);
+            }
+
         }
         vTaskDelay(pdMS_TO_TICKS(100));
     }

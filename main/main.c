@@ -51,6 +51,16 @@ static void set_white_callback(lv_obj_t *obj);
  */
 static void set_color_callback(lv_obj_t *obj);
 
+static void set_HID_callback(lv_obj_t *obj){
+    arrow_keypad_active = !arrow_keypad_active;
+    if (arrow_keypad_active)
+        lv_obj_add_state(obj, LV_STATE_CHECKED);
+    else
+        lv_obj_clear_state(obj, LV_STATE_CHECKED);
+    printf("%s\n",arrow_keypad_active ? "HID arrrow keypad enabled" : "HID arrrow keypad disabled");
+}
+
+
 /* This function will build items relation for properly navigate menu using joypad buttons
  *  For each menu item, some properties need to be setted:
  *   - object to be highlighted
@@ -67,8 +77,9 @@ static void link_menu_items()
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
     add_menu_item(ui_itemLbl1, ui_ScreenEdit1, NULL, ui_itemLbl2);
     add_menu_item(ui_itemLbl2, ui_ScreenEdit2, ui_itemLbl1, ui_itemLblRGB);
-    add_menu_item(ui_itemLblRGB, ui_ScreenEditRGB, ui_itemLbl2, ui_itemLblhome);
-    add_menu_item(ui_itemLblhome, ui_ScreenMain, ui_itemLblRGB, ui_itemLbl1);
+    add_menu_item(ui_itemLblRGB, ui_ScreenEditRGB, ui_itemLbl2, ui_CheckboxHID);
+    add_menu_item(ui_CheckboxHID, ui_ScreenSetup, ui_itemLblRGB, ui_itemLbl1);
+    bind_callback_to_object(ui_CheckboxHID, set_HID_callback);
 
     // This is the item in edit screens
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
@@ -87,19 +98,19 @@ static void link_menu_items()
     add_menu_item(ui_ButtonWHITE, NULL, ui_ButtonOK, ui_PanelRed);
 
     // Attach the function to be called (on MID button click) to the menu objects (Buttons)
-    bind_callback_to_label(ui_ButtonOK, set_color_callback);
-    bind_callback_to_label(ui_ButtonWHITE, set_white_callback);
+    bind_callback_to_object(ui_ButtonOK, set_color_callback);
+    bind_callback_to_object(ui_ButtonWHITE, set_white_callback);
 
     // Attach the variable to be edited to the menu objects (text label)
     // object to be highlighted, target text obj for value, pointer to variable, type of variable
-    bind_variable_to_label(ui_Panel1, ui_value1, &value1, typeof(value1));
-    bind_variable_to_label(ui_Panel2, ui_value2, &value2, typeof(value2));
-    bind_variable_to_label(ui_Panel3, ui_value3, &value3, typeof(value3));
-    bind_variable_to_label(ui_Panel4, ui_value4, &value4, typeof(value4));
-    bind_variable_to_label(ui_Panel5, ui_value5, &value5, typeof(value5));
-    bind_variable_to_label(ui_PanelRed, ui_valueRed, &red, typeof(red));
-    bind_variable_to_label(ui_PanelGreen, ui_valueGreen, &green, typeof(green));
-    bind_variable_to_label(ui_PanelBlue, ui_valueBlue, &blue, typeof(blue));
+    bind_variable_to_object(ui_Panel1, ui_value1, &value1, typeof(value1));
+    bind_variable_to_object(ui_Panel2, ui_value2, &value2, typeof(value2));
+    bind_variable_to_object(ui_Panel3, ui_value3, &value3, typeof(value3));
+    bind_variable_to_object(ui_Panel4, ui_value4, &value4, typeof(value4));
+    bind_variable_to_object(ui_Panel5, ui_value5, &value5, typeof(value5));
+    bind_variable_to_object(ui_PanelRed, ui_valueRed, &red, typeof(red));
+    bind_variable_to_object(ui_PanelGreen, ui_valueGreen, &green, typeof(green));
+    bind_variable_to_object(ui_PanelBlue, ui_valueBlue, &blue, typeof(blue));
     // Set the range for this variables
     set_variable_range(ui_PanelRed, 0, 255);
     set_variable_range(ui_PanelGreen, 0, 255);

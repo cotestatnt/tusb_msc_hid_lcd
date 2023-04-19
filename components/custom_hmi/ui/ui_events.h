@@ -7,9 +7,9 @@
 #define _UI_EVENTS_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
+
 
 #ifdef __cplusplus
 } /*extern "C"*/

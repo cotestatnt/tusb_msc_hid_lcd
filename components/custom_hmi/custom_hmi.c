@@ -203,7 +203,7 @@ int add_menu_item(lv_obj_t *obj, lv_obj_t *screen, lv_obj_t *prev, lv_obj_t *nex
 }
 
 // Bind a specific variable (pointer to) with a menu item
-void bind_variable_to_label(lv_obj_t *obj, lv_obj_t *value_lbl, void *var, int v_type)
+void bind_variable_to_object(lv_obj_t *obj, lv_obj_t *value_lbl, void *var, int v_type)
 {
     menu_item *item = get_item_pt(obj);
     // printf("%d\n", item);
@@ -228,7 +228,7 @@ void set_variable_range(lv_obj_t *obj, double min, double max)
     }
 }
 
-void bind_callback_to_label(lv_obj_t *obj, object_callback cb)
+void bind_callback_to_object(lv_obj_t *obj, object_callback cb)
 {
     menu_item *item = get_item_pt(obj);
     if (item != NULL)
