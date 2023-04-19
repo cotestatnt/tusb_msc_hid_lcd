@@ -16,9 +16,16 @@ extern "C" {
 extern lv_obj_t * ui_ScreenMain;
 extern lv_obj_t * ui_Counter;
 extern lv_obj_t * ui_ScreenSetup;
+extern lv_obj_t * ui_PanelEdit1;
 extern lv_obj_t * ui_itemLbl1;
+extern lv_obj_t * ui_Image1;
+extern lv_obj_t * ui_PanelEdit2;
 extern lv_obj_t * ui_itemLbl2;
+extern lv_obj_t * ui_Image2;
+extern lv_obj_t * ui_PanelEditRGB;
 extern lv_obj_t * ui_itemLblRGB;
+extern lv_obj_t * ui_Image3;
+extern lv_obj_t * ui_PanelEdit4;
 extern lv_obj_t * ui_CheckboxHID;
 extern lv_obj_t * ui_ScreenEdit1;
 extern lv_obj_t * ui_Panel1;
@@ -55,6 +62,7 @@ extern lv_obj_t * ui_valueLblWHITE;
 extern lv_obj_t * ui____initial_actions0;
 
 
+LV_IMG_DECLARE(ui_img_749525677);    // assets\Arrows-Right2-16.png
 
 
 

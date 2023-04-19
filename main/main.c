@@ -75,10 +75,10 @@ static void link_menu_items()
 {
     // This is the sub menu selection screen
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
-    add_menu_item(ui_itemLbl1, ui_ScreenEdit1, NULL, ui_itemLbl2);
-    add_menu_item(ui_itemLbl2, ui_ScreenEdit2, ui_itemLbl1, ui_itemLblRGB);
-    add_menu_item(ui_itemLblRGB, ui_ScreenEditRGB, ui_itemLbl2, ui_CheckboxHID);
-    add_menu_item(ui_CheckboxHID, ui_ScreenSetup, ui_itemLblRGB, ui_itemLbl1);
+    add_menu_item(ui_PanelEdit1, ui_ScreenEdit1, NULL, ui_PanelEdit2);
+    add_menu_item(ui_PanelEdit2, ui_ScreenEdit2, ui_PanelEdit1, ui_PanelEditRGB);
+    add_menu_item(ui_PanelEditRGB, ui_ScreenEditRGB, ui_PanelEdit2, ui_CheckboxHID);
+    add_menu_item(ui_CheckboxHID, ui_ScreenSetup, ui_PanelEditRGB, ui_PanelEdit1);
     bind_callback_to_object(ui_CheckboxHID, set_HID_callback);
 
     // This is the item in edit screens
