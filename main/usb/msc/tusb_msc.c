@@ -63,32 +63,48 @@ const esp_console_cmd_t cmds[] = {
         .help = "exit from application",
         .hint = NULL,
         .func = &console_exit,
+    }};
+
+// Unmount partition (expose to PC)
+static int msc_unmount(void)
+{
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
+        ESP_LOGE(MSC_TAG, "storage is already exposed");
+        return -1;
     }
-};
+    ESP_LOGI(MSC_TAG, "Unmount storage...");
+    ESP_ERROR_CHECK(tinyusb_msc_storage_unmount());
+    return 0;
+}
 
 // mount the partition and show all the files in BASE_PATH
-static void _mount(void)
+static void msc_mount(void)
 {
     ESP_LOGI(MSC_TAG, "Mount storage...");
     ESP_ERROR_CHECK(tinyusb_msc_storage_mount(BASE_PATH));
-
 
     // List all the files in this directory
     ESP_LOGI(MSC_TAG, "\nls command output:");
     struct dirent *d;
     DIR *dh = opendir(BASE_PATH);
-    if (!dh) {
-        if (errno == ENOENT) {
-            //If the directory is not found
+    if (!dh)
+    {
+        if (errno == ENOENT)
+        {
+            // If the directory is not found
             ESP_LOGE(MSC_TAG, "Directory doesn't exist %s", BASE_PATH);
-        } else {
-            //If the directory is not readable then throw error and exit
+        }
+        else
+        {
+            // If the directory is not readable then throw error and exit
             ESP_LOGE(MSC_TAG, "Unable to read directory %s", BASE_PATH);
         }
         return;
     }
-    //While the next entry is not readable we will print directory files
-    while ((d = readdir(dh)) != NULL) {
+    // While the next entry is not readable we will print directory files
+    while ((d = readdir(dh)) != NULL)
+    {
         printf("%s\n", d->d_name);
     }
     return;
@@ -97,7 +113,8 @@ static void _mount(void)
 // unmount storage
 static int console_unmount(int argc, char **argv)
 {
-    if (tinyusb_msc_storage_in_use_by_usb_host()) {
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
         ESP_LOGE(MSC_TAG, "storage is already exposed");
         return -1;
     }
@@ -109,19 +126,22 @@ static int console_unmount(int argc, char **argv)
 // read BASE_PATH/README.MD and print its contents
 static int console_read(int argc, char **argv)
 {
-    if (tinyusb_msc_storage_in_use_by_usb_host()) {
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
         ESP_LOGE(MSC_TAG, "storage exposed over USB. Application can't read from storage.");
         return -1;
     }
     ESP_LOGD(MSC_TAG, "read from storage:");
     const char *filename = BASE_PATH "/README.MD";
     FILE *ptr = fopen(filename, "r");
-    if (ptr == NULL) {
+    if (ptr == NULL)
+    {
         ESP_LOGE(MSC_TAG, "Filename not present - %s", filename);
         return -1;
     }
     char buf[1024];
-    while (fgets(buf, 1000, ptr) != NULL) {
+    while (fgets(buf, 1000, ptr) != NULL)
+    {
         printf("%s", buf);
     }
     fclose(ptr);
@@ -131,14 +151,16 @@ static int console_read(int argc, char **argv)
 // create file BASE_PATH/README.MD if it does not exist
 static int console_write(int argc, char **argv)
 {
-    if (tinyusb_msc_storage_in_use_by_usb_host()) {
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
         ESP_LOGE(MSC_TAG, "storage exposed over USB. Application can't write to storage.");
         return -1;
     }
     ESP_LOGD(MSC_TAG, "write to storage:");
     const char *filename = BASE_PATH "/README.MD";
     FILE *fd = fopen(filename, "r");
-    if (!fd) {
+    if (!fd)
+    {
         ESP_LOGW(MSC_TAG, "README.MD doesn't exist yet, creating");
         fd = fopen(filename, "w");
         fprintf(fd, "Mass Storage Devices are one of the most common USB devices. It use Mass Storage Class (MSC) that allow access to their internal data storage.\n");
@@ -152,13 +174,14 @@ static int console_write(int argc, char **argv)
 // Show storage size and sector size
 static int console_size(int argc, char **argv)
 {
-    if (tinyusb_msc_storage_in_use_by_usb_host()) {
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
         ESP_LOGE(MSC_TAG, "storage exposed over USB. Application can't access storage");
         return -1;
     }
     uint32_t sec_count = tinyusb_msc_storage_get_sector_count();
     uint32_t sec_size = tinyusb_msc_storage_get_sector_size();
-    printf("Storage Capacity %lluMB\n", ((uint64_t) sec_count) * sec_size / (1024 * 1024));
+    printf("Storage Capacity %lluMB\n", ((uint64_t)sec_count) * sec_size / (1024 * 1024));
     return 0;
 }
 
@@ -184,14 +207,15 @@ static esp_err_t storage_init_spiflash(wl_handle_t *wl_handle)
     ESP_LOGI(MSC_TAG, "Initializing wear levelling");
 
     const esp_partition_t *data_partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_FAT, NULL);
-    if (data_partition == NULL) {
+    if (data_partition == NULL)
+    {
         ESP_LOGE(MSC_TAG, "Failed to find FATFS partition. Check the partition table.");
         return ESP_ERR_NOT_FOUND;
     }
 
     return wl_mount(data_partition, wl_handle);
 }
-#else  // CONFIG_EXAMPLE_STORAGE_MEDIA_SPIFLASH
+#else // CONFIG_EXAMPLE_STORAGE_MEDIA_SPIFLASH
 static esp_err_t storage_init_sdmmc(sdmmc_card_t **card)
 {
     esp_err_t ret = ESP_OK;
@@ -214,7 +238,7 @@ static esp_err_t storage_init_sdmmc(sdmmc_card_t **card)
     slot_config.width = 4;
 #else
     slot_config.width = 1;
-#endif  // CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
+#endif // CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
 
     // On chips where the GPIOs used for SD card can be configured, set the user defined values
 #ifdef CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
@@ -225,9 +249,9 @@ static esp_err_t storage_init_sdmmc(sdmmc_card_t **card)
     slot_config.d1 = CONFIG_EXAMPLE_PIN_D1;
     slot_config.d2 = CONFIG_EXAMPLE_PIN_D2;
     slot_config.d3 = CONFIG_EXAMPLE_PIN_D3;
-#endif  // CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
+#endif // CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
 
-#endif  // CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
+#endif // CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
 
     // Enable internal pullups on enabled pins. The internal pullups
     // are insufficient however, please make sure 10k external pullups are
@@ -241,10 +265,11 @@ static esp_err_t storage_init_sdmmc(sdmmc_card_t **card)
     ESP_GOTO_ON_ERROR((*host.init)(), clean, MSC_TAG, "Host Config Init fail");
     host_init = true;
 
-    ESP_GOTO_ON_ERROR(sdmmc_host_init_slot(host.slot, (const sdmmc_slot_config_t *) &slot_config),
+    ESP_GOTO_ON_ERROR(sdmmc_host_init_slot(host.slot, (const sdmmc_slot_config_t *)&slot_config),
                       clean, MSC_TAG, "Host init slot fail");
 
-    while (sdmmc_card_init(&host, sd_card)) {
+    while (sdmmc_card_init(&host, sd_card))
+    {
         ESP_LOGE(MSC_TAG, "The detection pin of the slot is disconnected(Insert uSD card). Retrying...");
         vTaskDelay(pdMS_TO_TICKS(3000));
     }
@@ -256,18 +281,22 @@ static esp_err_t storage_init_sdmmc(sdmmc_card_t **card)
     return ESP_OK;
 
 clean:
-    if (host_init) {
-        if (host.flags & SDMMC_HOST_FLAG_DEINIT_ARG) {
+    if (host_init)
+    {
+        if (host.flags & SDMMC_HOST_FLAG_DEINIT_ARG)
+        {
             host.deinit_p(host.slot);
-        } else {
+        }
+        else
+        {
             (*host.deinit)();
         }
     }
-    if (sd_card) {
+    if (sd_card)
+    {
         free(sd_card);
         sd_card = NULL;
     }
     return ret;
 }
-#endif  // CONFIG_EXAMPLE_STORAGE_MEDIA_SPIFLASH
-
+#endif // CONFIG_EXAMPLE_STORAGE_MEDIA_SPIFLASH

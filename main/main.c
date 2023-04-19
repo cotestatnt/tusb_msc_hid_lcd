@@ -6,23 +6,22 @@
  */
 
 /*
-* GPIOs definitions inside
-*    components/esp_custom_board/include/esp_board.h
-*/
+ * GPIOs definitions inside
+ *    components/esp_custom_board/include/esp_board.h
+ */
 #include "esp_board.h"
 
 /*
-* HMI created as components
-*    (esp_custom_board as dependency using local path)
-*/
+ * HMI created as components
+ *    (esp_custom_board as dependency using local path)
+ */
 #include "custom_hmi.h"
 
 // USB included as file
 #include "usb/usb_main.c"
 
-// RGB NeoPixel LED
+// RGB NeoPixel LED library
 #include "led_strip.h"
-
 
 // Some variables tied to menu items
 int counter = 0;
@@ -32,34 +31,38 @@ float value3 = 25.7;
 float value4 = 12.1;
 bool value5 = true;
 
+const char *var_filename = "/var_tracing.csv";
+
 // RGB led stuffs
 static led_strip_handle_t led_strip;
 int red = 5;
 int green = 5;
 int blue = 5;
+#include "rgb_led.c"
 
-// Function prototypes
+// HMI function prototypes
 static void link_menu_items();
 
-static void set_led(int r, int g, int b) ;
-static void clear_led();
-static void configure_led();
+/* Called when "WHITE" HMI button was "pressed" (using joypad MID button)*/
+static void set_white_callback(lv_obj_t *obj);
 
-void set_white_callback (lv_obj_t * obj);
-void set_color_callback (lv_obj_t * obj);
-
+/* Called when "OK" HMI button was "pressed" (using joypad MID button)
+ *  A txt file with current variable values will be saved in MSC drive
+ */
+static void set_color_callback(lv_obj_t *obj);
 
 /* This function will build items relation for properly navigate menu using joypad buttons
-*  For each menu item, some properties need to be setted:
-*   - object to be highlighted
-*   - target screen to be shown on MID BUTTON click (can be NULL)
-*   - previous obj to point on UP BUTTON click (can be NULL)
-*   - next obj to point on DOWN BUTTON click (can be NULL)
-*
-*  Is also possible bind a variable to a a specific menu item ù
-*  in order to edit it's value using LEFT and RIGHT BUTTON click
-*/
-static void link_menu_items() {
+ *  For each menu item, some properties need to be setted:
+ *   - object to be highlighted
+ *   - target screen to be shown on MID BUTTON click (can be NULL)
+ *   - previous obj to point on UP BUTTON click (can be NULL)
+ *   - next obj to point on DOWN BUTTON click (can be NULL)
+ *
+ *  Is also possible bind a variable to a a specific menu item ù
+ *  in order to edit it's value using LEFT and RIGHT BUTTON click
+ */
+static void link_menu_items()
+{
     // This is the sub menu selection screen
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
     add_menu_item(ui_itemLbl1, ui_ScreenEdit1, NULL, ui_itemLbl2);
@@ -87,7 +90,6 @@ static void link_menu_items() {
     bind_callback_to_label(ui_ButtonOK, set_color_callback);
     bind_callback_to_label(ui_ButtonWHITE, set_white_callback);
 
-
     // Attach the variable to be edited to the menu objects (text label)
     // object to be highlighted, target text obj for value, pointer to variable, type of variable
     bind_variable_to_label(ui_Panel1, ui_value1, &value1, typeof(value1));
@@ -106,8 +108,93 @@ static void link_menu_items() {
     set_first_menu_object(ui_itemLbl1);
 }
 
+/* Load variables last values from var_tracing.csv file (last line)*/
+static int load_last_values()
+{
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
+        ESP_LOGE("READ", "storage exposed over USB. Application can't read from storage.");
+        return -1;
+    }
+    ESP_LOGD("READ", "read from storage:");
+    char path[32];
+    strcpy(path, BASE_PATH);
+    strcat(path, var_filename);
+    FILE *pFile = fopen(path, "r");
+    if (!pFile)
+    {
+        ESP_LOGE("READ", "Filename not present - %s", var_filename);
+        return -1;
+    }
+    int num_rows = 0;
+    int last_pos = 0;
+    char ch;
+    // Count the rows number and set last-1 position in order to get last row content
+    while (!feof(pFile))
+    {
+        ch = fgetc(pFile);
+        if (ch == '\n')
+        {
+            num_rows++;
+            // If this is not the last row, save position
+            ch = fgetc(pFile);
+            if (!feof(pFile))
+            {
+                last_pos = ftell(pFile);
+            }
+        }
+    }
+    fseek(pFile, last_pos - 1, SEEK_SET);
 
-void set_white_callback (lv_obj_t * obj){
+    // char buf[64];
+    // while (fgets(buf, sizeof(buf), pFile) != NULL) {
+    //     printf("%s", buf);
+    // }
+    fscanf(pFile, "%d", &value1);
+    fscanf(pFile, "%d", &value2);
+    fscanf(pFile, "%f", &value3);
+    fscanf(pFile, "%f", &value4);
+    fscanf(pFile, "%d", &value5);
+    fscanf(pFile, "%d", &red);
+    fscanf(pFile, "%d", &green);
+    fscanf(pFile, "%d", &blue);
+    fclose(pFile);
+
+    printf("Last saved values: %d\t %d\t %3.1f\t %3.1f\t %d\t %d\t %d\t %d\n",
+           value1, value2, value3, value4, value5, red, green, blue);
+    set_led(red, green, blue);
+    return 1;
+}
+
+/* Append variables values to file. Create if don't exists*/
+static int append_to_file(const char *str)
+{
+    if (tinyusb_msc_storage_in_use_by_usb_host())
+    {
+        ESP_LOGE("WRITE", "storage exposed over USB. Application can't write to storage.");
+        return -1;
+    }
+    ESP_LOGD("WRITE", "write to storage:");
+    char path[32];
+    strcpy(path, BASE_PATH);
+    strcat(path, var_filename);
+    FILE *pFile = fopen(path, "r");
+    if (!pFile)
+    {
+        ESP_LOGW("WRITE", "%s doesn't exist yet, creating", var_filename);
+        pFile = fopen(path, "w");
+        fprintf(pFile, "v1\t v2\t v3\t v4\t v5\t R\t G\t B\n");
+        fclose(pFile);
+    }
+    pFile = fopen(path, "a");
+    fprintf(pFile, str);
+    fclose(pFile);
+    return 1;
+}
+
+/* Called when "WHITE" HMI button was "pressed" (using joypad MID button)*/
+static void set_white_callback(lv_obj_t *obj)
+{
     printf("Object %d trigger this callback\n", obj);
     red = 127;
     green = 127;
@@ -118,64 +205,55 @@ void set_white_callback (lv_obj_t * obj){
     set_led(red, green, blue);
 }
 
-void set_color_callback (lv_obj_t * obj){
+/* Called when "OK" HMI button was "pressed" (using joypad MID button)*/
+static void set_color_callback(lv_obj_t *obj)
+{
     printf("Object %d trigger this callback\n", obj);
     set_led(red, green, blue);
-}
 
-static void set_led(int r, int g, int b) {
-    /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
-    led_strip_set_pixel(led_strip, 0, r, g, b);
-    /* Refresh the strip to send data */
-    led_strip_refresh(led_strip);
-}
-
-static void clear_led() {
-    /* Set all LED off to clear all pixels */
-    led_strip_clear(led_strip);
-}
-
-static void configure_led()
-{
-    ESP_LOGI(TAG, "Configure addressable LED!");
-    /* LED strip initialization with the GPIO and pixels number*/
-    led_strip_config_t strip_config = {
-        .strip_gpio_num = BSP_LEDSTRIP_IO,
-        .max_leds = 1, // at least one LED on board
-    };
-    led_strip_rmt_config_t rmt_config = {
-        .resolution_hz = 10 * 1000 * 1000, // 10MHz
-    };
-    ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
-    /* Set all LED off to clear all pixels */
-    clear_led();
+    char var_str[128];
+    snprintf(
+        var_str, sizeof(var_str),
+        "%d\t %d\t %3.1f\t %3.1f\t %d\t %d\t %d\t %d\n",
+        value1, value2, value3, value4, value5, red, green, blue);
+    append_to_file(var_str);
 }
 
 // A very simple task which increment a variable once a second
 // In the same task, update also RGB led when values change
 static void counter_task(void *arg)
 {
-    while (1) {
+    while (1)
+    {
         counter++;
-        set_int_value (ui_Counter, counter);
+        set_int_value(ui_Counter, counter);
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 
 void app_main(void)
 {
-    configure_led();
-    set_led(red, green, blue);
 
     // Init hmi (lcd + joypad)
     hmi_main();
 
-    // Build items relation for properly navigate menu using joypad buttons
-    link_menu_items();
-
     // Start counter task
     xTaskCreatePinnedToCore(counter_task, "Counter Task", 4096, NULL, 5, NULL, tskNO_AFFINITY);
 
+    // Configure RGB led
+    configure_led();
+
     // Start USB stuff
     usb_main();
+
+    // Load variable values from file
+    msc_mount(); // Mount partition in the app
+    load_last_values();
+
+    // expose partition to PC
+    // NB: writing variable values will not be possible until drive was unmounted
+    // msc_unmount();
+
+    // Build items relation for properly navigate menu using joypad buttons
+    link_menu_items();
 }
