@@ -66,6 +66,7 @@ const esp_console_cmd_t cmds[] = {
     }};
 
 // Unmount partition (expose to PC)
+#pragma GCC diagnostic ignored "-Wunused-function"
 static int msc_unmount(void)
 {
     if (tinyusb_msc_storage_in_use_by_usb_host())
@@ -77,6 +78,7 @@ static int msc_unmount(void)
     ESP_ERROR_CHECK(tinyusb_msc_storage_unmount());
     return 0;
 }
+#pragma GCC diagnostic pop
 
 // mount the partition and show all the files in BASE_PATH
 static void msc_mount(void)

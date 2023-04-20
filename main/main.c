@@ -54,9 +54,9 @@ static void set_color_callback(lv_obj_t *obj);
 static void set_HID_callback(lv_obj_t *obj){
     arrow_keypad_active = !arrow_keypad_active;
     if (arrow_keypad_active)
-        lv_obj_add_state(obj, LV_STATE_CHECKED);
+        lv_obj_add_state(ui_CheckboxHID, LV_STATE_CHECKED);
     else
-        lv_obj_clear_state(obj, LV_STATE_CHECKED);
+        lv_obj_clear_state(ui_CheckboxHID, LV_STATE_CHECKED);
     printf("%s\n",arrow_keypad_active ? "HID arrrow keypad enabled" : "HID arrrow keypad disabled");
 }
 
@@ -77,9 +77,9 @@ static void link_menu_items()
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
     add_menu_item(ui_PanelEdit1, ui_ScreenEdit1, NULL, ui_PanelEdit2);
     add_menu_item(ui_PanelEdit2, ui_ScreenEdit2, ui_PanelEdit1, ui_PanelEditRGB);
-    add_menu_item(ui_PanelEditRGB, ui_ScreenEditRGB, ui_PanelEdit2, ui_CheckboxHID);
-    add_menu_item(ui_CheckboxHID, ui_ScreenSetup, ui_PanelEditRGB, ui_PanelEdit1);
-    bind_callback_to_object(ui_CheckboxHID, set_HID_callback);
+    add_menu_item(ui_PanelEditRGB, ui_ScreenEditRGB, ui_PanelEdit2, ui_PanelEditHID);
+    add_menu_item(ui_PanelEditHID, ui_ScreenSetup, ui_PanelEditRGB, ui_PanelEdit1);
+    bind_callback_to_object(ui_PanelEditHID, set_HID_callback);
 
     // This is the item in edit screens
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
@@ -116,7 +116,7 @@ static void link_menu_items()
     set_variable_range(ui_PanelGreen, 0, 255);
     set_variable_range(ui_PanelBlue, 0, 255);
     // Set the first object to be highlighted on edit menu
-    set_first_menu_object(ui_itemLbl1);
+    set_first_menu_object(ui_PanelEdit1);
 }
 
 /* Load variables last values from var_tracing.csv file (last line)*/
@@ -207,9 +207,9 @@ static int append_to_file(const char *str)
 static void set_white_callback(lv_obj_t *obj)
 {
     printf("Object %d trigger this callback\n", obj);
-    red = 127;
-    green = 127;
-    blue = 127;
+    red = 20;
+    green = 20;
+    blue = 20;
     update_variable(get_item_pt(ui_PanelRed), 0);
     update_variable(get_item_pt(ui_PanelGreen), 0);
     update_variable(get_item_pt(ui_PanelBlue), 0);

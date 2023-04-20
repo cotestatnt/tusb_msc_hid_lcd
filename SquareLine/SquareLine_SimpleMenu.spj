@@ -3451,7 +3451,7 @@
               {
                 "nid": -1904618982,
                 "strtype": "OBJECT/Name",
-                "strval": "PanelEdit4",
+                "strval": "PanelEditHID",
                 "InheritedType": 10
               },
               {

@@ -19,7 +19,7 @@ lv_obj_t * ui_Image2;
 lv_obj_t * ui_PanelEditRGB;
 lv_obj_t * ui_itemLblRGB;
 lv_obj_t * ui_Image3;
-lv_obj_t * ui_PanelEdit4;
+lv_obj_t * ui_PanelEditHID;
 lv_obj_t * ui_CheckboxHID;
 lv_obj_t * ui_ScreenEdit1;
 lv_obj_t * ui_Panel1;
@@ -204,35 +204,31 @@ void ui_ScreenSetup_screen_init(void)
     lv_obj_add_flag(ui_Image3, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_clear_flag(ui_Image3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_PanelEdit4 = lv_obj_create(ui_ScreenSetup);
-    lv_obj_set_width(ui_PanelEdit4, lv_pct(100));
-    lv_obj_set_height(ui_PanelEdit4, lv_pct(26));
-    lv_obj_set_align(ui_PanelEdit4, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PanelEdit4, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_PanelEdit4, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_clear_flag(ui_PanelEdit4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_border_width(ui_PanelEdit4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_PanelEdit4, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_PanelEdit4, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_PanelEdit4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_PanelEdit4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_PanelEdit4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_row(ui_PanelEdit4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_PanelEdit4, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_PanelEdit4, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_opa(ui_PanelEdit4, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui_PanelEdit4, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
+    ui_PanelEditHID = lv_obj_create(ui_ScreenSetup);
+    lv_obj_set_width(ui_PanelEditHID, lv_pct(100));
+    lv_obj_set_height(ui_PanelEditHID, lv_pct(26));
+    lv_obj_set_align(ui_PanelEditHID, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_PanelEditHID, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_PanelEditHID, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_clear_flag(ui_PanelEditHID, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_border_width(ui_PanelEditHID, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_PanelEditHID, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_PanelEditHID, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_PanelEditHID, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_PanelEditHID, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_PanelEditHID, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_PanelEditHID, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_PanelEditHID, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelEditHID, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_opa(ui_PanelEditHID, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui_PanelEditHID, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
 
-    ui_CheckboxHID = lv_checkbox_create(ui_PanelEdit4);
+    ui_CheckboxHID = lv_checkbox_create(ui_PanelEditHID);
     lv_checkbox_set_text(ui_CheckboxHID, "USB KEYPAD");
     lv_obj_set_width(ui_CheckboxHID, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_CheckboxHID, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_CheckboxHID, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_CheckboxHID, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_set_style_border_color(ui_CheckboxHID, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_opa(ui_CheckboxHID, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui_CheckboxHID, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
-
 }
 void ui_ScreenEdit1_screen_init(void)
 {

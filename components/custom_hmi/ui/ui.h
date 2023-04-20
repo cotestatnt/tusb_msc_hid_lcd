@@ -25,7 +25,7 @@ extern lv_obj_t * ui_Image2;
 extern lv_obj_t * ui_PanelEditRGB;
 extern lv_obj_t * ui_itemLblRGB;
 extern lv_obj_t * ui_Image3;
-extern lv_obj_t * ui_PanelEdit4;
+extern lv_obj_t * ui_PanelEditHID;
 extern lv_obj_t * ui_CheckboxHID;
 extern lv_obj_t * ui_ScreenEdit1;
 extern lv_obj_t * ui_Panel1;
