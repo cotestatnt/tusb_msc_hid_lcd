@@ -229,9 +229,9 @@ void ui_ScreenSetup_screen_init(void)
     lv_obj_set_height(ui_CheckboxHID, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_CheckboxHID, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_CheckboxHID, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-
-    lv_obj_set_style_border_color(ui_CheckboxHID, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_FOCUSED);
-    lv_obj_set_style_border_opa(ui_CheckboxHID, 255, LV_PART_INDICATOR | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_color(ui_CheckboxHID, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_opa(ui_CheckboxHID, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui_CheckboxHID, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
 
 }
 void ui_ScreenEdit1_screen_init(void)
