@@ -1,7 +1,9 @@
 # BSP: ESP-CUSTOM-KIT
 
 ESP-CUSTOM-KIT is an ESP32-S3 based development board.
-![connections](https://user-images.githubusercontent.com/27758688/232748529-9f0a70ac-388b-4875-bcd9-696274a9701d.jpg)
+
+
+![connections](https://user-images.githubusercontent.com/27758688/233414422-b88b0928-a68a-4326-a385-720981b6b63a.png)
 
 ESP-CUSTOM-KIT features the following integrated components:
 
@@ -12,9 +14,6 @@ ESP-CUSTOM-KIT features the following integrated components:
 Its another distinguishing feature is the embedded CP210x chip - an advanced multi-interface USB bridge. This chip enables to use JTAG for direct debugging of ESP32 through the USB interface without a separate JTAG debugger. ESP-CUSTOM-KIT makes development convenient, easy, and cost-effective.
 
 Most of the ESP32 I/O pins are broken out to the board’s pin headers for easy access.
-
-
-
 
 
 | Supported Targets | ESP32-S2 | ESP32-S3 |
@@ -56,21 +55,18 @@ As a USB stack, a TinyUSB component is used.
 ### Hardware Required
 
 1. If the storage media is SPI Flash, any ESP board that have USB-OTG is supported.
-2. If the storage media is SD MMC Card, any ESP board with SD MMC card slot and an SD card is required. For Ex - ESP32-S3-USB-OTG
+2. If the storage media is SD MMC Card, any ESP board with SD MMC card slot and an SD card is required.
 
 ### Pin Assignment
 
-_Note:_ In case your board doesn't have micro-USB connector connected to USB-OTG peripheral, you may have to DIY a cable and connect **D+** and **D-** to the pins listed below.
+[defined in esp_board.h](https://github.com/cotestatnt/tusb_msc_hid_lcd/blob/master/components/esp_custom_board/include/esp_board.h)
 
-See common pin assignments for USB Device examples from [upper level](../../README.md#common-pin-assignments).
-
-Next, for Self-Powered Devices with VBUS monitoring, user must set ``self_powered`` to ``true`` and ``vbus_monitor_io`` to GPIO number (``VBUS_MONITORING_GPIO_NUM``) that will be used for VBUS monitoring.
 
 ### Additional Pin assignments for ESP32-S3 for accessing SD MMC Card
 
 On ESP32-S3, SDMMC peripheral is connected to GPIO pins using GPIO matrix. This allows arbitrary GPIOs to be used to connect an SD card. In this example, GPIOs can be configured in two ways:
 
-1. Using menuconfig: Run `idf.py menuconfig` in the project directory, open "USB DEV MSC Example Configuration" and select "SDMMC CARD" for "Storage Media Used".
+1. Using menuconfig: Run `idf.py menuconfig` in the project directory, open "USB DEV MSC Configuration" and select "SDMMC CARD" for "Storage Media Used".
 2. In the source code: See the initialization of ``sdmmc_slot_config_t slot_config`` structure in the example code.
 
 The table below lists the default pin assignments.
@@ -79,12 +75,12 @@ When using an ESP32-S3-USB-OTG board, this example runs without any extra modifi
 
 ESP32-S3 pin  | SD card pin | Notes
 --------------|-------------|------------
-GPIO36        | CLK         | 10k pullup
-GPIO35        | CMD         | 10k pullup
-GPIO37        | D0          | 10k pullup
-GPIO38        | D1          | not used in 1-line SD mode; 10k pullup in 4-line mode
-GPIO33        | D2          | not used in 1-line SD mode; 10k pullup in 4-line mode
-GPIO34        | D3          | not used in 1-line SD mode, but card's D3 pin must have a 10k pullup
+GPIO9         | CLK         | 10k pullup
+GPIO10        | CMD         | 10k pullup
+GPIO11        | D0          | 10k pullup
+GPIO32        | D1          | not used in 1-line SD mode; 10k pullup in 4-line mode
+GPIO13        | D2          | not used in 1-line SD mode; 10k pullup in 4-line mode
+GPIO14        | D3          | not used in 1-line SD mode, but card's D3 pin must have a 10k pullup
 
 By default, this example uses 4 line SD mode, utilizing 6 pins: CLK, CMD, D0 - D3. It is possible to use 1-line mode (CLK, CMD, D0) by changing "SD/MMC bus width" in the example configuration menu (see `CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_1`).
 
@@ -96,8 +92,7 @@ Note that even if card's D3 line is not connected to the ESP chip, it still has 
 2. In order to access SD MMC card as storage media, configuration has to be changed using `idf.py menuconfig`:
   - i. Open "USB Dev MSC Example Configuration" and select "SDMMC CARD" for "Storage Media Used"
   - ii. Open "SD/MMC bus width" and select between "4 lines (D0 - D3)" or "1 line (D0)"
-  - iii. Select the GPIO Pin numbers for SD Card Pin.
-  - iv. Save the configuration.
+  - iii. Save the configuration.
 
 Build the project and flash it to the board, then run monitor tool to view serial output:
 

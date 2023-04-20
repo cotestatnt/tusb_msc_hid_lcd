@@ -1035,7 +1035,7 @@
                   {
                     "nid": -2098610129,
                     "strtype": "IMAGE/Asset",
-                    "strval": "assets\\Arrows-Right-16.png",
+                    "strval": "assets\\Arrows-Right2-16.png",
                     "InheritedType": 5
                   },
                   {
@@ -1941,7 +1941,7 @@
                   {
                     "nid": -676187679,
                     "strtype": "IMAGE/Asset",
-                    "strval": "assets\\Arrows-Right-16.png",
+                    "strval": "assets\\Arrows-Right2-16.png",
                     "InheritedType": 5
                   },
                   {
@@ -2849,7 +2849,7 @@
                   {
                     "nid": 1375996068,
                     "strtype": "IMAGE/Asset",
-                    "strval": "assets\\Arrows-Right-16.png",
+                    "strval": "assets\\Arrows-Right2-16.png",
                     "InheritedType": 5
                   },
                   {
@@ -2889,7 +2889,7 @@
               {
                 "nid": -1182300614,
                 "strtype": "OBJECT/Name",
-                "strval": "PanelEdit3",
+                "strval": "PanelEditRGB",
                 "InheritedType": 10
               },
               {
@@ -13081,7 +13081,7 @@
     "theme_color2": 0,
     "exportFolderPath": "C:\\Users\\BAN_TAG\\Desktop\\SimpleMenu\\SquareLine_Project\\./main/ui",
     "projectExportFolderPath": "C:\\Users\\BAN_TAG\\Desktop\\SimpleMenu\\SquareLine_Project",
-    "backup_cnt": 16,
+    "backup_cnt": 17,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.4",
     "callfuncsexport": null,

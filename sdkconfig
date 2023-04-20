@@ -408,11 +408,13 @@ CONFIG_PARTITION_TABLE_MD5=y
 # end of Partition Table
 
 #
-# USB Dev MSC Example Configuration
+# USB Dev MSC Configuration
 #
-CONFIG_EXAMPLE_STORAGE_MEDIA_SPIFLASH=y
-# CONFIG_EXAMPLE_STORAGE_MEDIA_SDMMCCARD is not set
-# end of USB Dev MSC Example Configuration
+# CONFIG_EXAMPLE_STORAGE_MEDIA_SPIFLASH is not set
+CONFIG_EXAMPLE_STORAGE_MEDIA_SDMMCCARD=y
+# CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4 is not set
+CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_1=y
+# end of USB Dev MSC Configuration
 
 #
 # Compiler options

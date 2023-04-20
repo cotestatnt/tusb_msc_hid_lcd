@@ -241,17 +241,15 @@ static esp_err_t storage_init_sdmmc(sdmmc_card_t **card)
 #endif // CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
 
     // On chips where the GPIOs used for SD card can be configured, set the user defined values
-#ifdef CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
-    slot_config.clk = CONFIG_EXAMPLE_PIN_CLK;
-    slot_config.cmd = CONFIG_EXAMPLE_PIN_CMD;
-    slot_config.d0 = CONFIG_EXAMPLE_PIN_D0;
+    slot_config.clk = BSP_SD_CLK;
+    slot_config.cmd = BSP_SD_CMD;
+    slot_config.d0 = BSP_SD_D0;
 #ifdef CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
-    slot_config.d1 = CONFIG_EXAMPLE_PIN_D1;
-    slot_config.d2 = CONFIG_EXAMPLE_PIN_D2;
-    slot_config.d3 = CONFIG_EXAMPLE_PIN_D3;
+    slot_config.d1 = BSP_SD_D1;
+    slot_config.d2 = BSP_SD_D2;
+    slot_config.d3 = BSP_SD_D3;
 #endif // CONFIG_EXAMPLE_SDMMC_BUS_WIDTH_4
 
-#endif // CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
 
     // Enable internal pullups on enabled pins. The internal pullups
     // are insufficient however, please make sure 10k external pullups are

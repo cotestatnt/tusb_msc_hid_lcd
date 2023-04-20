@@ -260,6 +260,7 @@ void app_main(void)
     // Load variable values from file
     msc_mount(); // Mount partition in the app
     load_last_values();
+    set_led(red, green, blue);
 
     // expose partition to PC
     // NB: writing variable values will not be possible until drive was unmounted

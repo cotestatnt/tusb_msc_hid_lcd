@@ -1,4 +1,4 @@
-menu "USB Dev MSC Example Configuration"
+menu "USB Dev MSC Configuration"
 
     choice EXAMPLE_STORAGE_MEDIA
         prompt "Storage Media Used"
@@ -31,38 +31,6 @@ menu "USB Dev MSC Example Configuration"
             config EXAMPLE_SDMMC_BUS_WIDTH_1
                 bool "1 line (D0)"
         endchoice
-
-        if SOC_SDMMC_USE_GPIO_MATRIX
-
-            config EXAMPLE_PIN_CMD
-                int "CMD GPIO number"
-                default 35 if IDF_TARGET_ESP32S3
-
-            config EXAMPLE_PIN_CLK
-                int "CLK GPIO number"
-                default 36 if IDF_TARGET_ESP32S3
-
-            config EXAMPLE_PIN_D0
-                int "D0 GPIO number"
-                default 37 if IDF_TARGET_ESP32S3
-
-            if EXAMPLE_SDMMC_BUS_WIDTH_4
-
-                config EXAMPLE_PIN_D1
-                    int "D1 GPIO number"
-                    default 38 if IDF_TARGET_ESP32S3
-
-                config EXAMPLE_PIN_D2
-                    int "D2 GPIO number"
-                    default 33 if IDF_TARGET_ESP32S3
-
-                config EXAMPLE_PIN_D3
-                    int "D3 GPIO number"
-                    default 34 if IDF_TARGET_ESP32S3
-
-            endif  # EXAMPLE_SDMMC_BUS_WIDTH_4
-
-        endif  # SOC_SDMMC_USE_GPIO_MATRIX
 
     endif  # EXAMPLE_STORAGE_MEDIA_SDMMCCARD
 

@@ -19,11 +19,13 @@
 #define BSP_LEDSTRIP_IO     (GPIO_NUM_48)
 
 /* Display */
-#define BSP_LCD_SPI_MISO    (GPIO_NUM_34)
+
 #define BSP_LCD_SPI_MOSI    (GPIO_NUM_35)
 #define BSP_LCD_SPI_CLK     (GPIO_NUM_36)
 #define BSP_LCD_SPI_CS      (GPIO_NUM_37)
 #define BSP_LCD_BACKLIGHT   (GPIO_NUM_38)
+#define BSP_LCD_SPI_MISO    (GPIO_NUM_39)
+
 #define BSP_LCD_DC          (GPIO_NUM_40)
 #define BSP_LCD_RST         (GPIO_NUM_41)
 
@@ -37,16 +39,12 @@
 #define BTN_RES     (GPIO_NUM_17)
 
 /* uSD card */
-#define BSP_SD_D0   (GPIO_NUM_9)
-#define BSP_SD_D1   (GPIO_NUM_10)
-#define BSP_SD_D2   (GPIO_NUM_11)
-#define BSP_SD_D3   (GPIO_NUM_12)
-
-#define BSP_SD_CS   (BSP_SD_D3)
-#define BSP_SD_CLK  (BSP_LCD_SPI_CLK)
-#define BSP_SD_CMD  (BSP_LCD_SPI_MOSI)
-#define BSP_SD_DET  (BSP_LCD_SPI_MISO)
-#define BSP_SD_DO   (BSP_LCD_SPI_MISO)
+#define BSP_SD_CLK  (GPIO_NUM_9)
+#define BSP_SD_CMD  (GPIO_NUM_10)
+#define BSP_SD_D0   (GPIO_NUM_11)
+#define BSP_SD_D1   (GPIO_NUM_12)
+#define BSP_SD_D2   (GPIO_NUM_13)
+#define BSP_SD_D3   (GPIO_NUM_14)
 
 /* Button */
 typedef enum
@@ -57,8 +55,8 @@ typedef enum
 /* Digital Outputs */
 typedef enum
 {
-    BSP_OUT0 = GPIO_NUM_20,
-    BSP_OUT1 = GPIO_NUM_21
+    BSP_OUT0 = GPIO_NUM_1,
+    BSP_OUT1 = GPIO_NUM_2
 } bsp_out_t;
 
 #ifdef __cplusplus
