@@ -3,5 +3,5 @@ dependencies:
   espressif/led_strip: "^2.0.0"
   espressif/esp_tinyusb: "^1.2"
   espressif/button: "~2.5.1"
-  lvgl/lvgl: ">=8.3.0"
+  lvgl/lvgl: ">=8.3.6"
   idf: "^5.0"

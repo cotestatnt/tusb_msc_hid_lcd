@@ -51,6 +51,8 @@ static void set_white_callback(lv_obj_t *obj);
  */
 static void set_color_callback(lv_obj_t *obj);
 
+
+
 static void set_HID_callback(lv_obj_t *obj){
     arrow_keypad_active = !arrow_keypad_active;
     if (arrow_keypad_active)
@@ -60,6 +62,21 @@ static void set_HID_callback(lv_obj_t *obj){
     printf("%s\n",arrow_keypad_active ? "HID arrrow keypad enabled" : "HID arrrow keypad disabled");
 }
 
+
+static void set_mount_callback(lv_obj_t *obj){
+    static bool mount_drive = false;
+    mount_drive = !mount_drive;
+    if (mount_drive) {
+        // Mount partition in the app
+        msc_mount();
+        lv_obj_add_state(ui_CheckboxMount, LV_STATE_CHECKED);
+    }
+    else {
+        msc_unmount();
+        lv_obj_clear_state(ui_CheckboxMount, LV_STATE_CHECKED);
+    }
+    printf("%s\n", mount_drive ? "Partition mounted (App can write)" : "Partition unmounted (connected to host)");
+}
 
 /* This function will build items relation for properly navigate menu using joypad buttons
  *  For each menu item, some properties need to be setted:
@@ -75,25 +92,29 @@ static void link_menu_items()
 {
     // This is the sub menu selection screen
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
-    add_menu_item(ui_PanelEdit1, ui_ScreenEdit1, NULL, ui_PanelEdit2);
-    add_menu_item(ui_PanelEdit2, ui_ScreenEdit2, ui_PanelEdit1, ui_PanelEditRGB);
-    add_menu_item(ui_PanelEditRGB, ui_ScreenEditRGB, ui_PanelEdit2, ui_PanelEditHID);
-    add_menu_item(ui_PanelEditHID, ui_ScreenSetup, ui_PanelEditRGB, ui_PanelEdit1);
-    bind_callback_to_object(ui_PanelEditHID, set_HID_callback);
+    add_menu_item(ui_PanelEdit, ui_ScreenEdit, NULL, ui_PanelOptions);
+    add_menu_item(ui_PanelOptions, ui_ScreenOptions, ui_PanelEdit, ui_PanelEditRGB);
+    add_menu_item(ui_PanelEditRGB, ui_ScreenEditRGB, ui_PanelOptions, ui_PanelEditHID);
 
-    // This is the item in edit screens
+    // This is the item in edit screens (this screen is scrollable)
     // object to be highlighted, target screen (MID BUTTON), previous obj, next obj
     add_menu_item(ui_Panel1, NULL, NULL, ui_Panel2);
-    add_menu_item(ui_Panel2, NULL, ui_Panel1, NULL);
-
-    add_menu_item(ui_Panel3, NULL, NULL, ui_Panel4);
+    add_menu_item(ui_Panel2, NULL, ui_Panel1, ui_Panel3);
+    add_menu_item(ui_Panel3, NULL, ui_Panel2, ui_Panel4);
     add_menu_item(ui_Panel4, NULL, ui_Panel3, ui_Panel5);
-    add_menu_item(ui_Panel5, NULL, ui_Panel4, NULL);
+    add_menu_item(ui_Panel5, NULL, ui_Panel4, ui_Panel6);
+    add_menu_item(ui_Panel6, NULL, ui_Panel5, ui_Panel1);
 
+    // Options screen
+    add_menu_item(ui_PanelEditHID, NULL, NULL, ui_PanelEditMount);
+    add_menu_item(ui_PanelEditMount, NULL, ui_PanelEditHID, ui_PanelEditHID);
+    bind_callback_to_object(ui_PanelEditHID, set_HID_callback);
+    bind_callback_to_object(ui_PanelEditMount, set_mount_callback);
+
+    // RGB led screen
     add_menu_item(ui_PanelRed, NULL, ui_PanelBlue, ui_PanelGreen);
     add_menu_item(ui_PanelGreen, NULL, ui_PanelRed, ui_PanelBlue);
     add_menu_item(ui_PanelBlue, NULL, ui_PanelGreen, ui_ButtonOK);
-
     add_menu_item(ui_ButtonOK, NULL, ui_PanelBlue, ui_ButtonWHITE);
     add_menu_item(ui_ButtonWHITE, NULL, ui_ButtonOK, ui_PanelRed);
 
@@ -116,7 +137,7 @@ static void link_menu_items()
     set_variable_range(ui_PanelGreen, 0, 255);
     set_variable_range(ui_PanelBlue, 0, 255);
     // Set the first object to be highlighted on edit menu
-    set_first_menu_object(ui_PanelEdit1);
+    set_first_menu_object(ui_PanelEdit);
 }
 
 /* Load variables last values from var_tracing.csv file (last line)*/

@@ -16,9 +16,17 @@ lv_obj_t *last_screen = NULL;
 menu_item items[MAX_ITEMS];
 unsigned int item_num = 0;
 
+lv_group_t * group;
+
 /*******************************************************************************
  * UI handlers Private functions
  *******************************************************************************/
+
+// void focus_cb(lv_group_t * group){
+//     lv_obj_t * act = lv_group_get_focused(group);
+//     lv_obj_add_state(act, LV_STATE_FOCUSED);
+// }
+
 menu_item get_item(lv_obj_t *obj)
 {
     menu_item item = {0};
@@ -70,8 +78,6 @@ void set_menu_screen_active(lv_obj_t *target)
 void set_item_active(menu_item *target, bool next)
 {
     lv_obj_t *setObj = next ? target->next : target->prev;
-    // printf("current %d\n", current_obj);
-    // printf("next %d\n", setObj);
 
     if (NULL != current_obj && lv_scr_act() != ui_ScreenMain)
     {
@@ -80,9 +86,9 @@ void set_item_active(menu_item *target, bool next)
     }
     if (NULL != setObj && lv_scr_act() != ui_ScreenMain)
     {
-        printf("Set new item active\n");
+        printf("Focus next item active\n");
+        lv_group_focus_obj(setObj);
         lv_obj_add_state(setObj, LV_STATE_FOCUSED);
-        // Set current selected object as actual
         current_obj = setObj;
     }
 }
@@ -199,6 +205,7 @@ int add_menu_item(lv_obj_t *obj, lv_obj_t *screen, lv_obj_t *prev, lv_obj_t *nex
     items[item_num].variable = NULL;
     items[item_num].var_type = TYPENAME_NONE;
     item_num++;
+    lv_group_add_obj(group, obj);
     return item_num;
 }
 
@@ -252,6 +259,9 @@ void hmi_main()
     /* Add and show objects on display */
     app_lvgl_display();
     ESP_LOGI(TAG, "Example initialization done.");
+
+    group = lv_group_create();
+    // lv_group_set_focus_cb(group, focus_cb);
 
     // Call this function to initialize gamepad buttons
     joypad_buttons_init();
